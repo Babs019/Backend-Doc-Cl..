@@ -70,12 +70,13 @@
 
 
 
-
+<!-- 
     <ul>
     <?php 
     $name  = "Original String ";
     $name .= "Appended String";
-    echo '<strong>Hello World!</strong>';
+    echo '<strong>Hello World!</strong>'; 
+    
     #String concatenation example
     #Boolen variable
     #Object variable
@@ -139,17 +140,17 @@
     // echo "<p><pre>$five</pre></p>";     // with a variable
 
 
-    function add( $nodefault, $one = 1, $one2 = 1) {
-        $nodefault += 9;
-        echo "<p><pre>NO default:$nodefault</pre></p>";
-        echo "<p><pre>One Two:$one2</pre></p>";
-        return $nodefault + $one + $one2;
-    }
+    // function add( $nodefault, $one = 1, $one2 = 1) {
+    //     $nodefault += 9;
+    //     echo "<p><pre>NO default:$nodefault</pre></p>";
+    //     echo "<p><pre>One Two:$one2</pre></p>";
+    //     return $nodefault + $one + $one2;
+    // }
     
-    $five = 5;
-    $random = add($one2 = 4, $nodefault = 55);
-    echo "<p><pre>$random</pre></p>";
-    echo "<p><pre>$five</pre></p>";
+    // $five = 5;
+    // $random = add($one2 = 4, $nodefault = 55);
+    // echo "<p><pre>$random</pre></p>";
+    // echo "<p><pre>$five</pre></p>";
 
 
 
@@ -164,17 +165,17 @@
     #STRING CONCATENATION
 
 
-    function sumup(...$args){
-        $no = 0;
-        foreach($args as $v => $k) {
-            $no += intval( $k );
-        }
-        return $no;
-    }
+    // function sumup(...$args){
+    //     $no = 0;
+    //     foreach($args as $v => $k) {
+    //         $no += intval( $k );
+    //     }
+    //     return $no;
+    // }
 
-    $sum = sumup(10, 20, 30, 40, 70);
-    $string = 'This is sum of the numbers above: $' . $sum;
-    echo $string;
+    // $sum = sumup(10, 20, 30, 40, 70);
+    // $string = 'This is sum of the numbers above: $' . $sum;
+    // echo $string;
 
 
 
@@ -193,20 +194,23 @@
     #3. Multidimensional Array - an array of arrays
 
 
-    $string = "Home, Services, About, Shop";
-    $array = explode(", ", $string);
+    // $string = "Home, Services, About, Shop";
+    // $array = explode(", ", $string);
 
-    foreach($array as $each) {
-        $html = '<li><a href="/' . strtolower($each) . '">' . $each . '</a></li>';
-        echo $html;
-    }
+    // foreach($array as $each) {
+    //     $html = '<li><a href="/' . strtolower($each) . '">' . $each . '</a></li>';
+    //     echo $html;
+    // }
 
-    $back_string = implode(" ", $array);
-    echo '<li>'. $back_string . '</li>';
+    // $back_string = implode(" ", $array);
+    // echo '<li>'. $back_string . '</li>';
 
-    ?>
-    </ul>
-    <!-- <div>
+    // ?>
+    // </ul>
+
+
+
+    <div>
         <php 
             $json_text = file_get_contents("products.json");
             $array = json_decode ($json_text, true );
@@ -237,6 +241,9 @@
             echo "</ul>";
         ?>
         </div> -->
+
+
+
 
     <div>
         <p>
@@ -269,7 +276,7 @@
                     return $filtered = array_filter($arr, function($assoc){
                         $price = floatval($_GET["price"]);
                         $prc = floatval (str_replace(",", "",$assoc['price']));
-                        return $price >= $prc;
+                        return strpos($assoc['price'], $price) + 1;
                     });
                 }, $array);
             }
