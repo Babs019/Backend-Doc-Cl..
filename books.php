@@ -3,7 +3,7 @@
 require "db.php";//make the DB class available here
 
 class Books {
-    
+
     // Main Class - is a blueprint for creating objects / those not extend class 
     // Properties - are the data that the class will use / hold
     // methods    - are how the class will behave or how class will use data 
@@ -82,13 +82,29 @@ class Books {
                 $this->authors = explode(',', $data['authors'] );
                 $this->categories = explode( ',', $data['categories']);
                 $this->createdAt = strtotime( $data['time'] );
+                $this->totalReviews = rand(5, 5000);
+                $this->price      = rand(10, 100);
+                $this->sale_price = $this->price * 0.2;
             }
         }
     }
 
-    public static function getAll(){
+    public static function getAll($limit = false, $search = ''){
         $db =  new DB();
-        return $db->getAll("Books");
+        if( ! $limit && ! $search ){
+            
+            return $db->getAll("Books");
+        }
+
+        if($limit){
+            $books = $db->getAll("Books", $limit);
+            return $books;
+        }
+
+        if( $search ){
+            $books = $db->getAll("Books", 20, 0, $search);
+        }
+        
     }
 
     public function create_order(){
@@ -106,6 +122,6 @@ class Books {
 }
 
 
-$variable = new Books(2);#runs when an object is initialized
+#$variable = new Books(2);#runs when an object is initialized
 #$variable->changeName("My Name is Babs");
-echo $variable->title;
+#echo $variable->title;
