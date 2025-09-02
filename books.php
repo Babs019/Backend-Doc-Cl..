@@ -1,5 +1,10 @@
 <?php
-class Books {               // Main Class - is a blueprint for creating objects / those not extend class 
+
+require "db.php";//make the DB class available here
+
+class Books {
+    
+    // Main Class - is a blueprint for creating objects / those not extend class 
     // Properties - are the data that the class will use / hold
     // methods    - are how the class will behave or how class will use data 
 
@@ -14,12 +19,18 @@ class Books {               // Main Class - is a blueprint for creating objects 
     // __get - is called when a property is accessed
     // __set - is called when a property is set
 
+    //properties
+    //methods
+    //access modifiers
+    //properties are data that your class will use
+    //methods are how your class uses those data
+
 
     public $title = "";
     public $ID      = 0;
     protected $shelf = "Main";
     private $db     = "books.json";
-    private $database_type = "file";
+    public $database_type = "database";
     public $isbn    = "";
     public $published_date = "";
     public $thumbnail   = "https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=";
@@ -31,10 +42,8 @@ class Books {               // Main Class - is a blueprint for creating objects 
     public $authors    = [];
 
 
-
-
-
     public function __construct($id = 0, $title = ""){
+        $this->db = new DB();
         $this->ID = $id;
         $this->title = $title;
         if( $this->database_type == "file" ){
@@ -47,7 +56,7 @@ class Books {               // Main Class - is a blueprint for creating objects 
                     return $book['_id'] == $this->ID || $book['title'] == $this->title;
                 });
 
-                ($our_data[0]['title']);
+                var_dump($our_data[0]['title']);
 
                 $book = $our_data[0];
                 $this->title = $book['title'];
@@ -57,23 +66,46 @@ class Books {               // Main Class - is a blueprint for creating objects 
                 $this->short_description = $book['shortDescription'] ??= substr($book['longDescription'], 0, 200);
                 $this->thumbnail = $book['thumbnailUrl'];
             }
+        } else {
+            $data = $this->db->get("Books", ["id" => $id ]);
+
+            if(is_array($data)){
+                $this->ID = $data['id'];
+                $this->title = $data['title'];
+                $this->isbn = $data['isbn'];
+                $this->pageCount = $data['pageCount'];
+                $this->publishedDate = $data['publishedDate'];
+                $this->thumbnail = $data['thumbnailUrl'];
+                $this->shortDesc = $data['shortDescription'];
+                $this->longDesc = $data['longDescription'];
+                $this->status = $data['status'];
+                $this->authors = explode(',', $data['authors'] );
+                $this->categories = explode( ',', $data['categories']);
+                $this->createdAt = strtotime( $data['time'] );
+            }
         }
     }
 
+    public static function getAll(){
+        $db =  new DB();
+        return $db->getAll("Books");
+    }
+
+    public function create_order(){
+        $this->ID;
+        $this->db->insert();
+    }
 
     public function changeName($to){
         $this->name = $to;
     }
 
     public function __destruct(){
-        echo "<br> Bye Object is being destroyed.<br>";
+        echo "<br> Bye";
     }
 }
 
 
-
-$variable = new Books(2);               // Create an instance of the class / runs when an object is initialized
-
-#$variable->changeName("My name is Babs");
-
-echo $variable->title;                                  
+$variable = new Books(2);#runs when an object is initialized
+#$variable->changeName("My Name is Babs");
+echo $variable->title;
